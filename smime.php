@@ -37,6 +37,11 @@ class smime extends rcube_plugin
 	 */
     public function init()
     {
+        if( !extension_loaded('openssl') ) {
+            trigger_error( "OpenSSL extension is required for smime extension!", E_USER_WARNING );
+            return;
+        }
+
         $this->load_config('config.inc.php');
 
         $this->add_hook('message_load', array( $this, 'verify' ));
