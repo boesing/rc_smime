@@ -101,7 +101,7 @@ class smime extends rcube_plugin
         fclose($rRawBodyFile);
 
         # Check with openssl if the message is signed correctly
-        $this->bMessageIsValid = openssl_pkcs7_verify( $sBodyTempnam, PKCS7_TEXT, '/dev/null', $sSSLCertificatesPaths );
+        $this->bMessageIsValid = openssl_pkcs7_verify( $sBodyTempnam, PKCS7_TEXT, '/dev/null', $sSSLCertificatesPaths ) === true;
         unlink( $sBodyTempnam );
     }
     
