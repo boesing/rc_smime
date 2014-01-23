@@ -97,11 +97,12 @@ class smime extends rcube_plugin
 
         # Open the file because we need a filehandle to store the raw body
         $rRawBodyFile = fopen( $sBodyTempnam, 'w' );
-        $oStorage->get_raw_body( $iUid, $rRawBodyFile );
+        $sRawBody = $oStorage->get_raw_body( $iUid );
+        file_put_contents($sBodyTempnam, htmlspecialchars_decode($sRawBody));
         fclose($rRawBodyFile);
 
         # Check with openssl if the message is signed correctly
-        $this->bMessageIsValid = openssl_pkcs7_verify( $sBodyTempnam, PKCS7_TEXT, '/dev/null', $sSSLCertificatesPaths ) === true;
+        $this->bMessageIsValid = openssl_pkcs7_verify( $sBodyTempnam, PKCS7_DETACHED, '/dev/null', $sSSLCertificatesPaths ) === true;
         unlink( $sBodyTempnam );
     }
     
